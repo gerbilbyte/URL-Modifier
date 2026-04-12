@@ -26,7 +26,9 @@ Rules are applied top-to-bottom in order. Patterns are JavaScript regular expres
 
 ## Screenshots
 
-> *(Add screenshots of the popup and options page here)*
+> <img width="623" height="259" alt="image" src="https://github.com/user-attachments/assets/91a441de-c369-487d-90df-646f30914a90" />
+
+> <img width="1083" height="464" alt="image" src="https://github.com/user-attachments/assets/e774f9ab-2808-4ad8-91ea-533c67a423b7" />
 
 ---
 
