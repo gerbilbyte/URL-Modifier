@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>URL Modifier — Options</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f1117; --surface: #1a1d27; --surface2: #22263a;
+      --border: #2e3350; --accent: #4f8ef7; --grn: #4ff7a0;
+      --red: #f74f6a; --ylw: #f7d44f;
+      --text: #e8eaf6; --dim: #8890b0;
+      --mono: 'Courier New', monospace; --ui: system-ui, sans-serif;
+    }
+    html { font-size: 14px; }
+    body { background: var(--bg); color: var(--text); font-family: var(--ui); min-height: 100vh; }
+
+    /* Page header */
+    .page-hdr {
+      display: flex; align-items: center; gap: 12px;
+      padding: 18px 36px; background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { width: 36px; height: 36px; background: var(--accent); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    .page-hdr h1 { font-size: 18px; font-weight: 700; flex: 1; }
+    .toggle-pill {
+      display: flex; align-items: center; gap: 7px; padding: 7px 14px;
+      border-radius: 22px; border: 1.5px solid var(--border);
+      background: var(--surface2); font-size: 13px; font-weight: 600;
+      cursor: pointer; user-select: none;
+    }
+    .toggle-pill.on { border-color: var(--grn); color: var(--grn); background: #182a20; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dim); }
+    .toggle-pill.on .dot { background: var(--grn); box-shadow: 0 0 6px var(--grn); }
+
+    /* Layout */
+    .layout { display: flex; }
+    nav {
+      width: 200px; flex-shrink: 0; background: var(--surface);
+      border-right: 1px solid var(--border); padding: 18px 0; min-height: calc(100vh - 73px);
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 9px;
+      padding: 10px 20px; cursor: pointer; color: var(--dim);
+      font-size: 13px; font-weight: 500; border-left: 2px solid transparent;
+    }
+    .nav-item:hover { color: var(--text); background: var(--surface2); }
+    .nav-item.active { color: var(--accent); border-left-color: var(--accent); background: #1a1d3a; }
+
+    main { flex: 1; padding: 28px 36px; max-width: 860px; }
+    .section { display: none; }
+    .section.active { display: block; }
+    .section-title { font-size: 17px; font-weight: 700; margin-bottom: 5px; }
+    .section-desc { font-size: 13px; color: var(--dim); margin-bottom: 20px; line-height: 1.6; }
+
+    /* Toolbar */
+    .toolbar { display: flex; gap: 7px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+    .btn {
+      display: flex; align-items: center; gap: 5px;
+      padding: 7px 13px; border-radius: 5px; border: 1px solid var(--border);
+      background: var(--surface2); color: var(--text);
+      font-family: var(--ui); font-size: 13px; font-weight: 500; cursor: pointer;
+    }
+    .btn:hover { border-color: var(--accent); color: var(--accent); }
+    .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .btn.primary:hover { filter: brightness(1.1); }
+    .btn.danger { border-color: var(--red); color: var(--red); }
+    .btn.danger:hover { background: #2a1520; }
+    .sp { flex: 1; }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead th {
+      text-align: left; font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px; color: var(--dim);
+      padding: 0 8px 8px; border-bottom: 1px solid var(--border);
+    }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:hover { background: var(--surface2); }
+    tbody tr:last-child { border-bottom: none; }
+    td { padding: 7px 8px; vertical-align: middle; }
+    td input[type=text] {
+      width: 100%; padding: 5px 6px;
+      background: transparent; border: 1px solid transparent;
+      border-radius: 4px; color: var(--text);
+      font-family: var(--mono); font-size: 12px; outline: none;
+    }
+    td input[type=text].name-c { font-family: var(--ui); }
+    td input[type=text]:focus { background: var(--surface2); border-color: var(--accent); }
+    td input.bad { border-color: var(--red) !important; background: #2a1520; }
+
+    .mode-pills { display: flex; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; width: fit-content; }
+    .mode-pills input { display: none; }
+    .mode-pills label {
+      font-size: 11px; font-weight: 600; padding: 5px 8px;
+      color: var(--dim); background: var(--surface2); cursor: pointer; user-select: none;
+    }
+    .mode-pills input:checked + label { background: var(--accent); color: #fff; }
+
+    .tog { width: 30px; height: 17px; border-radius: 9px; background: var(--border);
+      cursor: pointer; position: relative; transition: .15s; flex-shrink: 0; }
+    .tog.on { background: var(--grn); }
+    .tog::after { content: ''; position: absolute; width: 11px; height: 11px;
+      border-radius: 50%; background: #fff; top: 3px; left: 3px; transition: .15s; }
+    .tog.on::after { transform: translateX(13px); }
+
+    .del-btn { background: none; border: 1px solid transparent; border-radius: 4px;
+      color: var(--dim); cursor: pointer; padding: 4px 6px; }
+    .del-btn:hover { border-color: var(--red); color: var(--red); background: #2a1520; }
+
+    .empty-row td { text-align: center; padding: 24px; color: var(--dim); }
+
+    /* Test panel */
+    .test-panel { background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 18px; margin-top: 22px; }
+    .test-panel h3 { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+    .test-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .test-row label { font-size: 12px; color: var(--dim); width: 80px; flex-shrink: 0; }
+    .test-row input {
+      flex: 1; padding: 6px 9px; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 4px; color: var(--text); font-family: var(--mono); font-size: 12px; outline: none;
+    }
+    .test-row input:focus { border-color: var(--accent); }
+    .test-out { background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 4px; padding: 9px 11px; font-family: var(--mono);
+      font-size: 12px; min-height: 36px; word-break: break-all; color: var(--grn); }
+    .test-out.same { color: var(--dim); }
+    .test-out.err  { color: var(--red); }
+
+    /* Docs */
+    .card { background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; }
+    .card h3 { font-size: 14px; font-weight: 700; color: var(--accent); margin-bottom: 9px; }
+    .card p, .card li { font-size: 13px; color: var(--dim); line-height: 1.7; }
+    .card ul { padding-left: 18px; margin-top: 5px; }
+    code { font-family: var(--mono); font-size: 12px; background: var(--surface2);
+      border: 1px solid var(--border); border-radius: 3px; padding: 1px 4px; color: var(--ylw); }
+
+    .ex-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+    .ex-table th { text-align: left; padding: 5px 9px; background: var(--surface2);
+      color: var(--dim); font-size: 11px; font-weight: 600; text-transform: uppercase;
+      border: 1px solid var(--border); }
+    .ex-table td { padding: 6px 9px; border: 1px solid var(--border); font-family: var(--mono); }
+
+    /* Compat grid */
+    .compat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px,1fr)); gap: 10px; margin-top: 12px; }
+    .compat-card { background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 5px; padding: 12px 14px; display: flex; align-items: center; gap: 9px; }
+    .ci { font-size: 20px; }
+    .cn { font-size: 12px; font-weight: 600; }
+    .cv { font-size: 11px; color: var(--dim); }
+
+    /* Toast */
+    #toast { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%);
+      background: var(--surface2); border: 1px solid var(--accent);
+      color: var(--text); font-size: 13px; padding: 8px 18px;
+      border-radius: 22px; pointer-events: none; opacity: 0;
+      transition: opacity .2s; white-space: nowrap; z-index: 99; }
+    #toast.show { opacity: 1; }
+    input[type=file] { display: none; }
+  </style>
+</head>
+<body>
+
+<div class="page-hdr">
+  <div class="logo">↝</div>
+  <h1>URL Modifier</h1>
+  <div class="toggle-pill" id="toggleBtn">
+    <div class="dot"></div>
+    <span id="statusTxt">Inactive</span>
+  </div>
+</div>
+
+<div class="layout">
+  <nav>
+    <div class="nav-item active" data-s="rules">📋 Rules</div>
+    <div class="nav-item" data-s="docs">📖 Documentation</div>
+    <div class="nav-item" data-s="about">ℹ️ About</div>
+  </nav>
+
+  <main>
+    <!-- Rules -->
+    <div class="section active" id="s-rules">
+      <div class="section-title">URL Rewrite Rules</div>
+      <p class="section-desc">Rules are applied top-to-bottom. Each rule matches a pattern in the request URL and applies your modification.</p>
+      <div class="toolbar">
+        <button class="btn primary" id="btnAdd">+ Add Rule</button>
+        <button class="btn" id="btnImport">↓ Import JSON</button>
+        <button class="btn" id="btnExport">↑ Export JSON</button>
+        <button class="btn danger" id="btnClear">✕ Clear All</button>
+        <div class="sp"></div>
+        <span id="rule-count" style="font-size:13px;color:var(--dim)">0 rules</span>
+      </div>
+      <table>
+        <thead><tr>
+          <th style="width:130px">Name</th>
+          <th>Pattern (regex)</th>
+          <th>Modification</th>
+          <th style="width:118px">Mode</th>
+          <th style="width:44px">On</th>
+          <th style="width:34px"></th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <div class="test-panel">
+        <h3>🔬 Live Tester</h3>
+        <div class="test-row"><label>Input URL</label><input type="text" id="test-in" placeholder="https://example.com/page?utm_source=google" /></div>
+        <div class="test-row"><label>Output URL</label><div class="test-out same" id="test-out">—</div></div>
+      </div>
+    </div>
+
+    <!-- Docs -->
+    <div class="section" id="s-docs">
+      <div class="section-title">Documentation</div>
+      <p class="section-desc">How to write URL rewrite rules.</p>
+      <div class="card">
+        <h3>How Rules Work</h3>
+        <p>Each rule has: <strong>Name</strong> (label), <strong>Pattern</strong> (regex matched against the full URL), <strong>Modification</strong> (text to insert/replace), and <strong>Mode</strong>:</p>
+        <ul>
+          <li><code>Before</code> — modification is inserted before each regex match</li>
+          <li><code>Replace</code> — each match is replaced by the modification; supports <code>$1</code>, <code>$2</code> capture group references</li>
+          <li><code>After</code> — modification is appended after each match</li>
+        </ul>
+        <p style="margin-top:8px">Rules run top-to-bottom; the output of each rule feeds the next. Invalid regex patterns fall back to literal string matching.</p>
+      </div>
+      <div class="card">
+        <h3>Examples</h3>
+        <table class="ex-table">
+          <thead><tr><th>Name</th><th>Pattern</th><th>Modification</th><th>Mode</th><th>Effect</th></tr></thead>
+          <tbody>
+            <tr><td>Strip UTM params</td><td>[?&]utm_[^&]*</td><td>(empty)</td><td>replace</td><td>Removes ?utm_source=… tracking params</td></tr>
+            <tr><td>Force HTTPS</td><td>^http://</td><td>https://</td><td>replace</td><td>Upgrades HTTP → HTTPS</td></tr>
+            <tr><td>Add CDN prefix</td><td>(static\.example\.com)</td><td>cdn.</td><td>before</td><td>static.example.com → cdn.static.example.com</td></tr>
+            <tr><td>Strip trailing slash</td><td>/$</td><td>(empty)</td><td>replace</td><td>Removes trailing slash</td></tr>
+            <tr><td>Redirect subdomain</td><td>^https://old\.</td><td>https://new.</td><td>replace</td><td>old.site.com → new.site.com</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h3>JSON Format</h3>
+        <p>Import/export uses a JSON array. Each rule: <code>id</code>, <code>name</code>, <code>pattern</code>, <code>modification</code>, <code>mode</code> (<code>"before"</code>/<code>"replace"</code>/<code>"after"</code>), <code>enabled</code>.</p>
+      </div>
+    </div>
+
+    <!-- About -->
+    <div class="section" id="s-about">
+      <div class="section-title">About &amp; Compatibility</div>
+      <p class="section-desc">URL Modifier v1.0.1 (2026-04-12) — WebExtensions API, compatible with all major browsers.<br>Created by gerbil.<br>Source and signed releases: 
+<a href="https://github.com/gerbilbyte/URL-Modifier">https://github.com/gerbilbyte/URL-Modifier</a></p>
+      <div class="card">
+        <h3>Browser Support</h3>
+        <div class="compat-grid">
+          <div class="compat-card"><span class="ci">🦊</span><div><div class="cn">Firefox</div><div class="cv">113+ Desktop &amp; Android</div></div></div>
+          <div class="compat-card"><span class="ci">🟡</span><div><div class="cn">Chrome</div><div class="cv">88+ all platforms</div></div></div>
+          <div class="compat-card"><span class="ci">🔵</span><div><div class="cn">Edge</div><div class="cv">88+ all platforms</div></div></div>
+          <div class="compat-card"><span class="ci">🔴</span><div><div class="cn">Opera</div><div class="cv">74+ all platforms</div></div></div>
+          <div class="compat-card"><span class="ci">🦁</span><div><div class="cn">Brave</div><div class="cv">1.30+ all platforms</div></div></div>
+          <div class="compat-card"><span class="ci">🧭</span><div><div class="cn">Safari</div><div class="cv">16+ macOS / iOS*</div></div></div>
+        </div>
+        <p style="margin-top:12px;font-size:12px">* Safari requires Xcode conversion via <code>safari-web-extension-converter</code>.</p>
+      </div>
+      <div class="card">
+        <h3>Firefox Android Install</h3>
+        <ul>
+          <li>In Firefox for Android, go to <strong>Settings → About Firefox</strong> and tap the Firefox logo 5× to enable debug mode.</li>
+          <li>Then go to <strong>Settings → Install extension from file</strong> and select the <code>.xpi</code> (zip) file.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Chrome / Edge / Brave Install</h3>
+        <ul>
+          <li>Go to <code>chrome://extensions</code> (or <code>edge://extensions</code>)</li>
+          <li>Enable <strong>Developer mode</strong></li>
+          <li>Click <strong>Load unpacked</strong> and select the extension folder</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+</div>
+
+<input type="file" id="file-input" accept=".json,application/json" />
+<div id="toast"></div>
+<script src="options.js"></script>
+</body>
+</html>
