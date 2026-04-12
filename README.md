@@ -1,6 +1,6 @@
 # URL Modifier
 
-> A Firefox and Chrome extension that intercepts and rewrites HTTP/HTTPS request URLs in real time using named regex rules — supporting before, replace, and after modes with live testing and JSON import/export.
+> A Firefox extension that intercepts and rewrites HTTP/HTTPS request URLs in real time using named regex rules — supporting before, replace, and after modes with live testing and JSON import/export.
 
 ![License: PolyForm Noncommercial](https://img.shields.io/badge/License-PolyForm_NC_1.0-blue.svg)
 ![Firefox](https://img.shields.io/badge/Firefox-140%2B-orange?logo=firefox)
@@ -12,7 +12,7 @@
 
 ## What it does
 
-URL Modifier sits between Firefox/Chrome and the network. Every HTTP and HTTPS request — pages, scripts, images, API calls, WebSockets — passes through your rules before it reaches the server. Each rule matches a pattern in the URL and applies your modification text, in one of three modes:
+URL Modifier sits between Firefox and the network. Every HTTP and HTTPS request — pages, scripts, images, API calls, WebSockets — passes through your rules before it reaches the server. Each rule matches a pattern in the URL and applies your modification text, in one of three modes:
 
 | Mode | Effect |
 |---|---|
