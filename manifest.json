@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "URL Modifier",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Rewrite HTTP/HTTPS request URLs using regex rules — before, replace, or after the matched pattern.",
   "permissions": [
     "storage",
