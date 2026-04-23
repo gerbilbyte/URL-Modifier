@@ -1,6 +1,8 @@
 # URL Modifier
 
-> A Firefox extension that intercepts and rewrites HTTP/HTTPS request URLs in real time using named regex rules — supporting before, replace, and after modes with live testing and JSON import/export.
+A Firefox extension that intercepts and rewrites HTTP/HTTPS request URLs in real time using named regex rules — supporting before, replace, and after modes with live testing and JSON import/export.
+
+WARNING! This code is 100% vibe coded using Claude, so use at your own risk. I've only tested this on Firefox for linux and Android and it seems to work pretty well. I'm not liable for any damages caused to data, Firefox exploding, physical melting of an android device from using this extension blah blah blah.
 
 ![License: PolyForm Noncommercial](https://img.shields.io/badge/License-PolyForm_NC_1.0-blue.svg)
 ![Firefox](https://img.shields.io/badge/Firefox-140%2B-orange?logo=firefox)
