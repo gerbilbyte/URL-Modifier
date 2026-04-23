@@ -53,6 +53,8 @@ Rules are applied top-to-bottom in order. Patterns are JavaScript regular expres
 
 ### Firefox for Android (Fenix)
 
+The following instructions are now invalid. The latest version can be found on the Mozilla Add-on page. Simply navigate to https://addons.mozilla.org/en-GB/firefox/addon/url-modifier-by-gerbil/
+
 1. Download the latest signed `.xpi` from the [Releases](../../releases) page
 2. Transfer it to your device (email, Google Drive, USB, etc.)
 3. Open Firefox on Android, tap the address bar, and navigate to the file — or open it from a file manager
@@ -61,6 +63,8 @@ Rules are applied top-to-bottom in order. Patterns are JavaScript regular expres
 > **Note:** The extension requires Firefox for Android 142 or later. Unsigned `.xpi` files require Firefox Nightly. The signed release works on standard Firefox.
 
 ### Firefox Desktop (Windows / macOS / Linux)
+
+The following instructions are now invalid. The latest version can be found on the Mozilla Add-on page. Simply navigate to https://addons.mozilla.org/en-GB/firefox/addon/url-modifier-by-gerbil/
 
 **From a release (recommended):**
 1. Download the signed `.xpi` from the [Releases](../../releases) page
